@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, make_response, request
-from flask_login import login_user
+from flask_login import current_user, login_user, logout_user
 from models import db, User
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -62,7 +62,20 @@ def login():
 
 @user_bp.route('/logout', methods=['POST'])
 def logout():
-    response = {
-        'message': 'Logged out'
-    }
-    return jsonify(response), 200
+    if current_user.is_authenticated:
+        logout_user()
+        return jsonify({'message': 'Logged out'}), 200
+    return jsonify({'message': 'Not logged in'}), 401
+
+@user_bp.route('/<username>/exists', methods=['GET'])
+def user_exists(username):
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return jsonify({'message': 'User exists'}), 200
+    return jsonify({'message': 'User does not exist'}), 404
+
+@user_bp.route('/', methods=['GET'])
+def get_current_user():
+    if current_user.is_authenticated:
+        return jsonify({'result':current_user.serialize()}), 200
+    return jsonify({'message': 'Not logged in'}), 401
