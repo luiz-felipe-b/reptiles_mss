@@ -9,7 +9,7 @@ import models
 
 load_dotenv()
 
-file_path = os.path.abspath(os.getcwd())+"\\database\\user.db"
+file_path = os.path.abspath(os.getcwd()) + os.getenv('DATABASE_PATH')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
