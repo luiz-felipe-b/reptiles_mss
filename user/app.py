@@ -18,14 +18,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + file_path
 
 models.init_app(app)
 app.register_blueprint(user_bp)
-loginManager = LoginManager(app)
+login_manager = LoginManager(app)
 migrate = Migrate(app, models.db)
 
-@loginManager.user_loader
+@login_manager.user_loader
 def load_user(user_id):
     return models.User.query.filter_by(id=user_id).first()
 
-@loginManager.request_loader
+@login_manager.request_loader
 def load_user_from_request(request):
     api_key = request.headers.get('Authorization')
     if api_key:
@@ -46,4 +46,4 @@ class CustomSessionInterface(SecureCookieSessionInterface):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0' ,port=os.getenv('PORT'))

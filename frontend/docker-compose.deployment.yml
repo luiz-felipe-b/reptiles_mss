@@ -1,0 +1,54 @@
+version: '3.12'
+
+volumes:
+  userapp:
+  reptileapp:
+  favoriteapp:
+  frontendapp:
+
+services:
+  user-service:
+    container_name: user-service-c
+    build:
+      context: ../user
+      dockerfile: ../user/Dockerfile
+    ports:
+      - "5001:5001"
+    volumes:
+      - userapp:/userapp
+    restart: always
+
+  reptile-service:
+    container_name: reptile-service-c
+    build:
+      context: ../reptile
+      dockerfile: ../reptile/Dockerfile
+    ports:
+      - "5002:5002"
+    volumes:
+      - reptileapp:/reptileapp
+    restart: always
+
+  favorite-service:
+    container_name: favorite-service-c
+    build:
+      context: ../favorite
+      dockerfile: ../favorite/Dockerfile
+    ports:
+      - "5003:5003"
+    volumes:
+      - favoriteapp:/favoriteapp
+    restart: always
+
+  frontend-service:
+    container_name: frontend-service-c
+    build:
+      context: ../frontend
+      dockerfile: ../frontend/Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - frontendapp:/frontendapp
+    restart: always
+    env_file:
+      - .env

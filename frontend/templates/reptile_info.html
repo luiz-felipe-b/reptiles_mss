@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block pageContent %}
+
+    {% set url = "/reptile/" + reptile.slug %}
+    {% set imageSRC = reptile.image %}
+
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="col-md-4 mt-5">
+            <div class="card mb-4 box-shadow">
+                <img class="card-img-top"
+                     alt="" style="width: 100%; display: block;"
+                     src="{{ imageSRC }}"
+                     data-holder-rendered="true">
+                <div class="card-body">
+                    <strong>
+                        <p class="card-text">{{ reptile.name }}</p>
+                    </strong>
+                    <p class="card-text">{{ reptile.genus.title() + ' ' + reptile.species }}</p>
+                    <div style="display: grid">
+                        <span class="card-text">Length: {{ reptile.size }} meters</span>
+                        <span class="card-text">Weight: {{ reptile.weight }} kg</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center ">
+                        <form method="POST">
+                            {{ form.hidden_tag() }}
+                            {% if favorite_check(reptile.id, favorites) %}
+                                <button type="submit" class="btn btn-lg btn-outline-secondary " id="favorite">Remove From Favorites
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-lg btn-outline-secondary " id="favorite">Add to Favorites
+                                </button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
